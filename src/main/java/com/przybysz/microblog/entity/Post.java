@@ -18,6 +18,9 @@ public class Post {
     @Column(name = "date", columnDefinition = "TIMESTAMP")
     private String date;
 
+    @Column(name = "rating")
+    private int rating;
+
 //    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
   @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -26,9 +29,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String content, String date) {
+    public Post(String content, String date, int rating) {
         this.content = content;
         this.date = date;
+        this.rating = rating;
     }
 
     public int getId() {
@@ -51,6 +55,14 @@ public class Post {
         return date;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public void setDate(String date) {
         this.date = date;
     }
@@ -69,6 +81,7 @@ public class Post {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", date='" + date + '\'' +
+                ", rating=" + rating +
                 ", user=" + user +
                 '}';
     }

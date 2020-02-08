@@ -3,13 +3,16 @@ package com.przybysz.microblog.rest;
 import com.przybysz.microblog.entity.Post;
 import com.przybysz.microblog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController
-@RequestMapping("/")
+//@RestController
+@Controller
+@RequestMapping("/test")
 public class PostRestController {
 
     private PostService postService;
@@ -19,20 +22,32 @@ public class PostRestController {
         this.postService = postService;
     }
 
+    @GetMapping("/hello")
+    public String sayHello(Model model) {
+        model.addAttribute("date", new java.util.Date());
+        return "index";
+    }
+
 
     @GetMapping("/posts")
-    public List<Post> findAll(){
-        return postService.findAll();
+    public String findAll(Model model) {
+//        List<Post> thePosts = postService.findAll();
+//
+//        System.out.println(thePosts);
+
+        model.addAttribute("posts" , postService.findAll());
+        return "list-posts";
+
     }
 
     @GetMapping("/posts/{postId}")
-    public Post getPost(@PathVariable int postId){
+    public Post getPost(@PathVariable int postId) {
         Post post = postService.findById(postId);
         return post;
     }
 
     @PostMapping("/posts")
-    public Post addPost(@RequestBody Post post){
+    public Post addPost(@RequestBody Post post) {
         //todo w request body nie powinno być jeszcze user?
 
         //set id 0 to make sure to set new id;
@@ -42,25 +57,24 @@ public class PostRestController {
     }
 
     @PutMapping("/posts")
-    public Post updatePost(@RequestBody Post post){
+    public Post updatePost(@RequestBody Post post) {
 
         postService.save(post);
         return post;
     }
 
 
-
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable int postId){
+    public String deletePost(@PathVariable int postId) {
 
         Post post = postService.findById(postId);
 
-        if(post==null){
+        if (post == null) {
             throw new RuntimeException("Post id not found: " + postId);
         }
         postService.deleteById(postId);
 
-        return "Deleted post id: " +postId;
+        return "Deleted post id: " + postId;
     }
 
 }

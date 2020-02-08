@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -43,7 +44,12 @@ public class PostDAOImpl implements PostDAO{
 
     @Override
     public void save(Post post) {
-        //Save or update (if id=0)
+        //Save or update(if id=0)
+
+        if(post.getId()==0){
+            LocalDateTime now = LocalDateTime.now();
+            post.setDate(now.toString());
+        }
 
         Post dbPost = entityManager.merge(post);
 
