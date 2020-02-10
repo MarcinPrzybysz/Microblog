@@ -1,13 +1,15 @@
 package com.przybysz.microblog.dao;
 
 import com.przybysz.microblog.entity.Post;
-import javafx.geometry.Pos;
+import com.przybysz.microblog.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -29,6 +31,11 @@ public class PostDAOImpl implements PostDAO{
         // execute query and get result list
         List<Post> posts = query.getResultList();
 
+        Comparator<Post> compareByDate = (Post p1, Post p2) -> p1.getDate().compareTo(p2.getDate());
+
+        Collections.sort(posts, compareByDate);
+
+        Collections.reverse(posts);
         // return the results
         return posts;
     }
@@ -51,7 +58,15 @@ public class PostDAOImpl implements PostDAO{
             post.setDate(now.toString());
         }
 
+
+
+        User user = new User("username", "pass", "firstName","lastName", "email");
+        user.setId(5);
+        post.setUser(user);
+
         Post dbPost = entityManager.merge(post);
+
+
 
         //Updates id
         post.setId(dbPost.getId());

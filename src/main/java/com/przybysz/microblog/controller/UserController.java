@@ -1,21 +1,23 @@
-package com.przybysz.microblog.rest;
+package com.przybysz.microblog.controller;
 
 import com.przybysz.microblog.entity.User;
 import com.przybysz.microblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.DescriptorKey;
 import java.util.List;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping("/user")
-public class UserRestController {
+public class UserController {
 
     private UserService userService;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -32,11 +34,25 @@ public class UserRestController {
         return user;
     }
 
-    @PostMapping("")
-    public User addUser(@RequestBody User user){
+    @GetMapping("/register")
+    public String registerUser(Model model){
+        User newUser = new User();
+        model.addAttribute("user", newUser);
+
+        return "register-form";
+    }
+
+    @GetMapping("/login")
+    public String loginUser(){
+
+        return "signin-form";
+    }
+
+    @PostMapping("addUser")
+    public String addUser(@ModelAttribute("user") User user){
         user.setId(0);
         userService.save(user);
-        return user;
+        return "redirect:/test/posts";
     }
 
     @DeleteMapping("/{userId}")

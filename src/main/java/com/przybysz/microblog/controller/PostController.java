@@ -1,4 +1,4 @@
-package com.przybysz.microblog.rest;
+package com.przybysz.microblog.controller;
 
 import com.przybysz.microblog.entity.Post;
 import com.przybysz.microblog.service.PostService;
@@ -7,18 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 //@RestController
 @Controller
 @RequestMapping("/test")
-public class PostRestController {
+public class PostController {
 
     private PostService postService;
 
     @Autowired
-    public PostRestController(PostService postService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
@@ -34,6 +32,8 @@ public class PostRestController {
 //        List<Post> thePosts = postService.findAll();
 //
 //        System.out.println(thePosts);
+        Post newPost = new Post();
+        model.addAttribute("post", newPost);
 
         model.addAttribute("posts" , postService.findAll());
         return "list-posts";
@@ -46,15 +46,21 @@ public class PostRestController {
         return post;
     }
 
-    @PostMapping("/posts")
-    public Post addPost(@RequestBody Post post) {
-        //todo w request body nie powinno być jeszcze user?
 
-        //set id 0 to make sure to set new id;
+    @PostMapping("/addPost")
+    public String addPost(@ModelAttribute("employee") Post post) {
+
+        System.out.println(post.toString());
+
+        // save the employee
         post.setId(0);
         postService.save(post);
-        return post;
+
+        // use a redirect to prevent duplicate submissions
+        return "redirect:/test/posts";
     }
+
+
 
     @PutMapping("/posts")
     public Post updatePost(@RequestBody Post post) {
@@ -76,5 +82,12 @@ public class PostRestController {
 
         return "Deleted post id: " + postId;
     }
+
+
+
+
+
+
+
 
 }
