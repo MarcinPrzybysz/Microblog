@@ -1,7 +1,7 @@
 package com.przybysz.microblog.config;
 
 import com.przybysz.microblog.entity.User;
-import com.przybysz.microblog.repo.UserRepository;
+import com.przybysz.microblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

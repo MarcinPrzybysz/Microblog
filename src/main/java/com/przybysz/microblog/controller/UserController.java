@@ -1,36 +1,37 @@
 package com.przybysz.microblog.controller;
 
 import com.przybysz.microblog.entity.User;
-import com.przybysz.microblog.service.UserService;
+import com.przybysz.microblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //@RestController
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @GetMapping("")
     public List<User> findAll(){
-        return userService.findAll();
+        return userRepository.findAll();
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable int userId){
+    public Optional<User> getUser(@PathVariable int userId){
 
         //set id 0 to make sure to set new id;
-        User user = userService.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         return user;
     }
 
@@ -51,20 +52,22 @@ public class UserController {
     @PostMapping("addUser")
     public String addUser(@ModelAttribute("user") User user){
         user.setId(0);
-        userService.save(user);
+        userRepository.save(user);
         return "redirect:/test/posts";
     }
 
     @DeleteMapping("/{userId}")
     public String deleteUser(@PathVariable int userId){
 
-        User user = userService.findById(userId);
+
+        Optional<User> user = userRepository.findById(userId);
+
 
         if(user==null){
             throw new RuntimeException("User with id not found: " + userId);
         }
 
-        userService.deleteById(userId);
+        userRepository.deleteById(userId);
 
         return "Deleted user id: "+userId;
     }

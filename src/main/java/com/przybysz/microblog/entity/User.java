@@ -11,33 +11,34 @@ public class User {
     @Column(name="id")
     private int id;
 
-    @Column(name="username")
-    private String username;
+    @Column(name="user_name")
+    private String userName;
 
     @Column(name="password")
     private String password;
 
-    @Column(name="first_name")
-    private String firstName;
-
-    @Column(name="last_name")
-    private String lastName;
-
     @Column(name="email")
     private String email;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
+
+    //todo czy cascade?
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="id")
+    private Authorities authorities;
 
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String email) {
-        this.username = username;
+    public User(String userName, String password, String firstName, String lastName, String email) {
+        this.userName = userName;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.email = email;
 
     }
+
 
     public int getId() {
         return id;
@@ -47,12 +48,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -63,22 +64,6 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -87,16 +72,28 @@ public class User {
         this.email = email;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Authorities getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Authorities authorities) {
+        this.authorities = authorities;
+    }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

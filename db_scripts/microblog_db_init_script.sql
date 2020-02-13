@@ -14,11 +14,10 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` char(80) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `enabled` boolean not null,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1
 
 
 -- Encrypted using BCrypt
@@ -30,10 +29,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (username,password,first_name,last_name,email)
 VALUES 
-('jan','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','Jan','Karski','jan@example.com'),
-('marek','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','Marek','Aureliusz','marek.aureliusz@example.com'),
-('agata','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','Agata','Meble','agata@example.com'),
-('admin','$2a$10$qQCJ6l5WidSTSxSIHOsyJuw/1dRXIvgBLJ7WHdKGdFLcZPNoR97/i','admin','admin','admin@example.com');
+('jan','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','jan@example.com'),
+('marek','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','marek.aureliusz@example.com'),
+('agata','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','agata@example.com'),
+('admin','$2a$10$qQCJ6l5WidSTSxSIHOsyJuw/1dRXIvgBLJ7WHdKGdFLcZPNoR97/i','admin@example.com');
 
 
 --
