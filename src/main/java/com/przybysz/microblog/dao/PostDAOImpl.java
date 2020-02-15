@@ -2,6 +2,7 @@ package com.przybysz.microblog.dao;
 
 import com.przybysz.microblog.entity.Post;
 import com.przybysz.microblog.entity.User;
+import com.przybysz.microblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +12,15 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PostDAOImpl implements PostDAO{
 
     private EntityManager entityManager;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public PostDAOImpl(EntityManager entityManager) {
@@ -41,6 +46,17 @@ public class PostDAOImpl implements PostDAO{
     }
 
     @Override
+    public List<Post> findByUserId(int userId) {
+        System.out.println("USer id: " + userId);
+
+        Query query = entityManager.createQuery("from Post WHERE user_id=:userId");
+        query.setParameter("userId", userId);
+        List<Post> posts = query.getResultList();
+
+        return posts;
+    }
+
+    @Override
     public Post findById(int id) {
 
         Post post = entityManager.find(Post.class, id);
@@ -49,8 +65,9 @@ public class PostDAOImpl implements PostDAO{
         //todo: catch exceptions
     }
 
+
     @Override
-    public void save(Post post) {
+    public void save(Post post, String username){
         //Save or update(if id=0)
 
         if(post.getId()==0){
@@ -59,10 +76,13 @@ public class PostDAOImpl implements PostDAO{
         }
 
 
+        Optional<User> user = userRepository.findByUserName(username);
 
-        User user = new User("username", "pass", "firstName","lastName", "email");
-        user.setId(5);
-        post.setUser(user);
+        try{
+            post.setUser(user.get());
+        }catch (Exception e){
+            throw new RuntimeException("Cannot save post with null User: " + e);
+        }
 
         Post dbPost = entityManager.merge(post);
 

@@ -2,6 +2,7 @@ package com.przybysz.microblog.entity;
 
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "post")

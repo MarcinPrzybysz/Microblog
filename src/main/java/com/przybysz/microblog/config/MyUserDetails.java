@@ -40,6 +40,7 @@ public class MyUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         System.out.println("wywołane getUsername");
+        System.out.println(userName);
         return userName;
     }
 
@@ -62,4 +63,5 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
 }

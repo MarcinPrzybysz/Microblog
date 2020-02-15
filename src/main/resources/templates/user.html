@@ -34,10 +34,10 @@
         </ul>
 
 
-        <div sec:authorize="!isAuthenticated()" >
+        <div sec:authorize="!isAuthenticated()">
             <a class="nav-link" href="/login">Login </a>
         </div>
-        <div sec:authorize="!isAuthenticated()" >
+        <div sec:authorize="!isAuthenticated()">
             <a class="nav-link" href="/user/register">Register </a>
         </div>
 
@@ -52,11 +52,28 @@
     </div>
 </nav>
 
+<main role="main" class="container">
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">User's info</h6>
+
+        <br>
+        <strong class="text-gray-dark" > USERNAME:</strong>
+        <td th:text="${user.userName}">username</td>
+
+        <br><br>
+
+        <strong class="text-gray-dark" > EMAIL:</strong>
+        <td th:text="${user.email}">email</td>
+        <br><br>
+
+    </div>
+</main>
+
 
 <main role="main" class="container">
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
-        <h6 class="border-bottom border-gray pb-2 mb-0">All posts</h6>
+        <h6 class="border-bottom border-gray pb-2 mb-0">User's posts</h6>
 
         <th:block th:each="tempPost: ${posts}">
             <div class="media text-muted pt-3">
@@ -70,9 +87,9 @@
                     <div class="d-flex justify-content-between align-items-center w-100">
                         <strong class="text-gray-dark" th:text="'@'+${tempPost.user.userName}"></strong>
 
-                        <span th:if="${tempPost.rating>0}" th:text="'+'+${tempPost.rating}"></span>
-                        <span th:if="${tempPost.rating<0}" th:text="${tempPost.rating}"></span>
-                        <span th:if="${tempPost.rating==0}" th:text="${tempPost.rating}"> <a href="#" th:text="${tempPost.rating}"></a></span>
+                        <span th:if="${tempPost.rating>0}"> <a href="#" th:text="'+'+${tempPost.rating}"></a></span>
+                        <span th:if="${tempPost.rating<0}"> <a href="#" th:text="${tempPost.rating}"></a></span>
+                        <span th:if="${tempPost.rating==0}"> <a href="#" th:text="${tempPost.rating}"></a></span>
                     </div>
                     <div>
                         <small><span th:text="${tempPost.date}"></span></small>
@@ -99,14 +116,6 @@
 
 
 </main>
-
-<!--<div sec:authentication="name">wwwwwww</div>-->
-<!--<div sec:authentication="name">wwwwwww</div>-->
-<!--<div sec:authentication="principal.authorities"></div>-->
-
-<!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>-->
-<!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
-<!--<div sec:authorize="isAuthenticated()">isAuthenticated</div>-->
 
 
 </body>

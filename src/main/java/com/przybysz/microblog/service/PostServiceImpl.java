@@ -2,6 +2,7 @@ package com.przybysz.microblog.service;
 
 import com.przybysz.microblog.dao.PostDAO;
 import com.przybysz.microblog.entity.Post;
+import com.przybysz.microblog.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> findByUserId(int userId) {
+        return postDAO.findByUserId(userId);
+    }
+
+    @Override
     @Transactional
     public Post findById(int id) {
         return postDAO.findById(id);
@@ -32,8 +38,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void save(Post post) {
-        postDAO.save(post);
+    public void save(Post post, String username) {
+        postDAO.save(post, username);
     }
 
     @Override
