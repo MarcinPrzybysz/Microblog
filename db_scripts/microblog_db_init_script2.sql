@@ -29,10 +29,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (user_name,password,email)
 VALUES 
-('jan','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','jan@example.com'),
-('marek','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','marek.aureliusz@example.com'),
-('agata','$2a$10$RJrtv3jpUF3uduoSxWQnNOENWFLaLRbqCTEZ4ukwvs..xsZLGYFo2','agata@example.com'),
-('admin','$2a$10$qQCJ6l5WidSTSxSIHOsyJuw/1dRXIvgBLJ7WHdKGdFLcZPNoR97/i','admin@example.com');
+('jan','$2a$10$2UklC5TcPfzEy3jEm0NhhuAjs87mBEYyxeJbArdyJrcWcMlDpwXXe','jan@example.com'),
+('marek','$2a$10$2UklC5TcPfzEy3jEm0NhhuAjs87mBEYyxeJbArdyJrcWcMlDpwXXe','marek.aureliusz@example.com'),
+('agata','$2a$10$2UklC5TcPfzEy3jEm0NhhuAjs87mBEYyxeJbArdyJrcWcMlDpwXXe','agata@example.com'),
+('admin','$2a$10$2UklC5TcPfzEy3jEm0NhhuAjs87mBEYyxeJbArdyJrcWcMlDpwXXe','admin@example.com');
 
 
 --

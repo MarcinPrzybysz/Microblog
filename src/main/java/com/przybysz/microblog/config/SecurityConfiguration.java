@@ -1,6 +1,5 @@
 package com.przybysz.microblog.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -27,14 +27,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
 //                .antMatchers("/test/posts").hasRole("ADMIN")
-//                .antMatchers("/test/posts").hasAnyRole("ADMIN","USER")
-//                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/addUser").permitAll()
+                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/").permitAll()
                 .and().formLogin();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

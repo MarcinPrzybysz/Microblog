@@ -14,6 +14,7 @@ public class MyUserDetails implements UserDetails {
 
     private String userName;
     private String password;
+    private String avatar;
     private boolean active;
     private List<GrantedAuthority> authorities;
 
@@ -21,6 +22,7 @@ public class MyUserDetails implements UserDetails {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.active = user.isEnabled();
+        this.avatar = user.getAvatar();
         this.authorities = Arrays.stream(user.getAuthorities().getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -33,15 +35,21 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        System.out.println("wywołane getPassworrd");
         return password;
     }
 
     @Override
     public String getUsername() {
-        System.out.println("wywołane getUsername");
-        System.out.println(userName);
+//
         return userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

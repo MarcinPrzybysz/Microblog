@@ -47,4 +47,16 @@ public class PostServiceImpl implements PostService {
     public void deleteById(int id) {
         postDAO.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public void addToRating(int postId) {
+        postDAO.addToRating(postId);
+    }
+
+    @Override
+    @Transactional
+    public void reduceFromRating(int postId) {
+        postDAO.reduceFromRating(postId);
+    }
 }

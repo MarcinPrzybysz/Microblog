@@ -1,12 +1,10 @@
 package com.przybysz.microblog.controller;
 
-import com.przybysz.microblog.config.MyUserDetails;
 import com.przybysz.microblog.entity.Post;
 import com.przybysz.microblog.entity.User;
 import com.przybysz.microblog.repository.UserRepository;
 import com.przybysz.microblog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +17,14 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PostService postService;
+
+
 
     @Autowired
     public UserController(UserRepository userRepository) {
@@ -37,13 +38,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String getUser(@PathVariable int userId, Model model){
-
         List<Post> posts = postService.findByUserId(userId);
-        System.out.println(posts.get(1).getContent());
-
-
         User user = userRepository.findById(userId).get();
-
 
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
@@ -55,7 +51,6 @@ public class UserController {
     public String registerUser(Model model){
         User newUser = new User();
         model.addAttribute("user", newUser);
-
         return "register-form";
     }
 
@@ -67,8 +62,13 @@ public class UserController {
     @PostMapping("addUser")
     public String addUser(@ModelAttribute("user") User user){
         user.setId(0);
-        userRepository.save(user);
-        return "redirect:/test/posts";
+        System.out.println("Controller-add user");
+
+//        userService.addUser(user);
+
+        userRepository.addUser(user);
+
+        return "redirect:/posts";
     }
 
     @DeleteMapping("/{userId}")
@@ -82,5 +82,8 @@ public class UserController {
         userRepository.deleteById(userId);
         return "Deleted user id: "+userId;
     }
+
+
+
 
 }

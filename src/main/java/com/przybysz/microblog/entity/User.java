@@ -23,11 +23,13 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column(name = "avatar")
+    private String avatar;
 
     //todo czy cascade?
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="id")
-    private Authorities authorities;
+    private Authority authorities;
 
     public User() {
     }
@@ -36,7 +38,6 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.email = email;
-
     }
 
 
@@ -80,12 +81,20 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Authorities getAuthorities() {
+    public Authority getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Authorities authorities) {
+    public void setAuthorities(Authority authorities) {
         this.authorities = authorities;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

@@ -16,31 +16,19 @@ import java.util.Optional;
 
 //@RestController
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/posts")
 public class PostController {
 
     private PostService postService;
-
 
     @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
-    @GetMapping("/hello")
-    public String sayHello(Model model) {
-        model.addAttribute("date", new java.util.Date());
-        return "index";
-    }
 
-
-    @GetMapping("/posts")
+    @GetMapping("")
     public String findAll(Model model) {
-//        List<Post> thePosts = postService.findAll();
-//
-//        System.out.println(thePosts);
-
-
         Post newPost = new Post();
         model.addAttribute("post", newPost);
 
@@ -49,7 +37,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public Post getPost(@PathVariable int postId) {
         Post post = postService.findById(postId);
         return post;
@@ -59,10 +47,9 @@ public class PostController {
     @PostMapping("/addPost")
     public String addPost(@ModelAttribute("employee") Post post) {
 
-        System.out.println(post.toString());
-
-        User user = new User("username", "pass", "firstName","lastName", "email");
-        user.setId(5);
+//        System.out.println(post.toString());
+//        User user = new User("username", "pass", "firstName","lastName", "email");
+//        user.setId(5);
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -74,18 +61,17 @@ public class PostController {
             username = principal.toString();
         }
 
-
         // save the employee
         post.setId(0);
         postService.save(post, username);
 
         // use a redirect to prevent duplicate submissions
-        return "redirect:/test/posts";
+        return "redirect:/posts";
     }
 
 
     //todo do zmiany metoda, nie jest potrzebny username
-    @PutMapping("/posts")
+    @PutMapping("")
     public Post updatePost(@RequestBody Post post) {
 
         User user = new User("username", "pass", "firstName","lastName", "email");
@@ -96,7 +82,7 @@ public class PostController {
     }
 
 
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public String deletePost(@PathVariable int postId) {
 
         Post post = postService.findById(postId);
@@ -109,6 +95,19 @@ public class PostController {
         return "Deleted post id: " + postId;
     }
 
+
+    @GetMapping("/plus/{id}")
+    public String addRating(@PathVariable int id) {
+        postService.addToRating(id);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/minus/{id}")
+    public String reduceRating(@PathVariable int id) {
+
+        postService.reduceFromRating(id);
+        return "redirect:/posts";
+    }
 
 
 }

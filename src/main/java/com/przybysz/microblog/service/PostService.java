@@ -17,6 +17,9 @@ public interface PostService {
 
     public void deleteById(int id);
 
+    public void addToRating(int postId);
+
+    public void reduceFromRating(int postId);
 
 
     //todo: find by id

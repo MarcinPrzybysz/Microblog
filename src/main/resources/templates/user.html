@@ -16,7 +16,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Microblog</a>
+    <a class="navbar-brand" href="/posts">Microblog</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -24,15 +24,12 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#">Info</a>
             </li>
 
         </ul>
-
 
         <div sec:authorize="!isAuthenticated()">
             <a class="nav-link" href="/login">Login </a>
@@ -57,12 +54,17 @@
         <h6 class="border-bottom border-gray pb-2 mb-0">User's info</h6>
 
         <br>
-        <strong class="text-gray-dark" > USERNAME:</strong>
+
+
+        <img  class="bd-placeholder-img mr-2 rounded"  preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${user.avatar})}" width="100" height="100" th:title="'@'+${user.userName}"/>
+
+        <br><br>
+        <strong class="text-gray-dark"> USERNAME:</strong>
         <td th:text="${user.userName}">username</td>
 
         <br><br>
 
-        <strong class="text-gray-dark" > EMAIL:</strong>
+        <strong class="text-gray-dark"> EMAIL:</strong>
         <td th:text="${user.email}">email</td>
         <br><br>
 
@@ -75,41 +77,39 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <h6 class="border-bottom border-gray pb-2 mb-0">User's posts</h6>
 
-        <th:block th:each="tempPost: ${posts}">
-            <div class="media text-muted pt-3">
-                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#007bff"/>
-                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                </svg>
-                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                        <strong class="text-gray-dark" th:text="'@'+${tempPost.user.userName}"></strong>
 
-                        <span th:if="${tempPost.rating>0}"> <a href="#" th:text="'+'+${tempPost.rating}"></a></span>
-                        <span th:if="${tempPost.rating<0}"> <a href="#" th:text="${tempPost.rating}"></a></span>
-                        <span th:if="${tempPost.rating==0}"> <a href="#" th:text="${tempPost.rating}"></a></span>
+        <div th:if="${#lists.isEmpty(posts)}">
+            <br>
+            No activity for user!
+            <br><br>
+        </div>
+        <div th:unless="${#lists.isEmpty(posts)}">
+            <th:block th:each="tempPost: ${posts}">
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg"
+                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                         aria-label="Placeholder: 32x32">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"/>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <a th:href="@{/user/{id}(id = ${tempPost.user.id})}"><strong class="text-gray-dark"
+                                                                                         th:text="'@'+${tempPost.user.userName}"></strong></a>
+                            <span th:if="${tempPost.rating>0}" th:text="'+'+${tempPost.rating}"> </span>
+                            <span th:if="${tempPost.rating<0}" th:text="${tempPost.rating}"></span>
+                            <span th:if="${tempPost.rating==0}" th:text="${tempPost.rating}"></span>
+                        </div>
+                        <div>
+                            <small><span th:text="${tempPost.date}"></span></small>
+                        </div>
+                        <span class="d-block" th:text="${tempPost.content}"></span>
                     </div>
-                    <div>
-                        <small><span th:text="${tempPost.date}"></span></small>
-                    </div>
-                    <span class="d-block" th:text="${tempPost.content}"></span>
                 </div>
-            </div>
 
-        </th:block>
-
-        <div sec:authorize="isAuthenticated()">
-            <small class="d-block text-right mt-3">
-                <form action="#" th:action="@{/test/addPost}" th:object="${post}" method="POST">
-                    <div class="form-group">
-                        <textarea class="form-control  form-control-sm" id="exampleFormControlTextarea1" rows="3"
-                                  th:field="*{content}"></textarea>
-                    </div>
-                    <button class="btn btn-secondary btn-sm" type="submit">Send</button>
-                </form>
-            </small>
+            </th:block>
         </div>
 
     </div>

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PostDAOImpl implements PostDAO{
+public class PostDAOImpl implements PostDAO {
 
     private EntityManager entityManager;
 
@@ -35,30 +35,23 @@ public class PostDAOImpl implements PostDAO{
 
         // execute query and get result list
         List<Post> posts = query.getResultList();
+        orderByDate(posts);
 
-        Comparator<Post> compareByDate = (Post p1, Post p2) -> p1.getDate().compareTo(p2.getDate());
-
-        Collections.sort(posts, compareByDate);
-
-        Collections.reverse(posts);
-        // return the results
         return posts;
     }
 
     @Override
     public List<Post> findByUserId(int userId) {
-        System.out.println("USer id: " + userId);
-
         Query query = entityManager.createQuery("from Post WHERE user_id=:userId");
         query.setParameter("userId", userId);
         List<Post> posts = query.getResultList();
+        orderByDate(posts);
 
         return posts;
     }
 
     @Override
     public Post findById(int id) {
-
         Post post = entityManager.find(Post.class, id);
 
         return post;
@@ -67,26 +60,22 @@ public class PostDAOImpl implements PostDAO{
 
 
     @Override
-    public void save(Post post, String username){
+    public void save(Post post, String username) {
         //Save or update(if id=0)
-
-        if(post.getId()==0){
+        if (post.getId() == 0) {
             LocalDateTime now = LocalDateTime.now();
             post.setDate(now.toString());
         }
 
-
         Optional<User> user = userRepository.findByUserName(username);
 
-        try{
+        try {
             post.setUser(user.get());
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Cannot save post with null User: " + e);
         }
 
         Post dbPost = entityManager.merge(post);
-
-
 
         //Updates id
         post.setId(dbPost.getId());
@@ -97,7 +86,7 @@ public class PostDAOImpl implements PostDAO{
     public void deleteById(int id) {
         Query query = entityManager.createQuery("delete from Post where id=:postId");
 
-        query.setParameter("postId",id);
+        query.setParameter("postId", id);
 
         query.executeUpdate();
 
@@ -105,5 +94,27 @@ public class PostDAOImpl implements PostDAO{
     }
 
 
+    private List<Post> orderByDate(List<Post> posts) {
+        Comparator<Post> compareByDate = (Post p1, Post p2) -> p1.getDate().compareTo(p2.getDate());
+        Collections.sort(posts, compareByDate);
+
+        Collections.reverse(posts);
+        return posts;
+    }
+
+    @Override
+    public void addToRating(int postId) {
+        Query query = entityManager.createQuery("UPDATE Post set rating = rating+1 WHERE id=:id");
+        query.setParameter("id", postId);
+        query.executeUpdate();
+
+    }
+
+    @Override
+    public void reduceFromRating(int postId) {
+        Query query = entityManager.createQuery("UPDATE Post set rating = rating-1 WHERE id=:id");
+        query.setParameter("id", postId);
+        query.executeUpdate();
+    }
 
 }
