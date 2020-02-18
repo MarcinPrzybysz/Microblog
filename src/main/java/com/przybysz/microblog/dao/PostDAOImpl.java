@@ -94,6 +94,7 @@ public class PostDAOImpl implements PostDAO {
 
 
     private List<Post> orderByDate(List<Post> posts) {
+        System.out.println("order BY DATE");
         Comparator<Post> compareByDate = (Post p1, Post p2) -> p1.getDate().compareTo(p2.getDate());
         Collections.sort(posts, compareByDate);
 

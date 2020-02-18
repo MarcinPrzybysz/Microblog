@@ -47,9 +47,6 @@ public class PostController {
     @PostMapping("/addPost")
     public String addPost(@ModelAttribute("employee") Post post) {
 
-//        System.out.println(post.toString());
-//        User user = new User("username", "pass", "firstName","lastName", "email");
-//        user.setId(5);
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

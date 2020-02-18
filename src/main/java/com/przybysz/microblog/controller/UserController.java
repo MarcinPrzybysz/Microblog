@@ -17,13 +17,11 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
-
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PostService postService;
-
 
 
     @Autowired
@@ -64,7 +62,7 @@ public class UserController {
 
         User newUser = userRepository.findByUsername(user.getUsername());
 
-        if(newUser.getUsername().equals(user.getUsername())){
+        if(newUser!=null){
             model.addAttribute("user",new User());
             model.addAttribute("inputError","Username already taken");
             return "register-form";
