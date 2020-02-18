@@ -35,7 +35,8 @@
         <div sec:authorize="isAuthenticated()">
             <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
 
-            <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span>
+            <a th:href="@{/user/{id}(id =${#authentication.getPrincipal().getUsername()}  }"> <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span> </a>
+
             <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
 
         </div>
@@ -46,6 +47,7 @@
 
     </div>
 </nav>
+
 
 
 <form class="container" action="#" th:action="@{/user/addUser}"  th:object="${user}" method="POST">

@@ -17,17 +17,12 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/posts">Microblog</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#">Info</a>
             </li>
-
         </ul>
 
         <div sec:authorize="!isAuthenticated()" >
@@ -40,14 +35,14 @@
         <div sec:authorize="isAuthenticated()">
             <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
 
-            <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span>
+            <a th:href="@{/user/{id}(id =${#authentication.getPrincipal().getUsername()}  }"> <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span> </a>
+
             <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
 
         </div>
         <div sec:authorize="isAuthenticated()">
             <a class="nav-link" href="/logout">LOG OUT<span class="sr-only">(current)</span></a>
         </div>
-
 
     </div>
 </nav>
@@ -57,8 +52,6 @@
         <h6 class="border-bottom border-gray pb-2 mb-0">User's info</h6>
 
         <br>
-
-
         <img  class="bd-placeholder-img mr-2 rounded"  preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${user.avatar})}" width="100" height="100" th:title="'@'+${user.username}"/>
 
         <br><br>
@@ -89,8 +82,9 @@
         <div th:unless="${#lists.isEmpty(posts)}">
             <th:block th:each="tempPost: ${posts}">
                 <div class="media text-muted pt-3">
-                    <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${tempPost.user.avatar})}" width="32" height="32" th:title="'@'+${tempPost.user.username}"/>
-
+                    <a th:href="@{/user/{id}(id = ${tempPost.user.id})}">
+                        <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${tempPost.user.avatar})}" width="32" height="32" th:title="'@'+${tempPost.user.username}"/>
+                    </a>
                     <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <a th:href="@{/user/{id}(id = ${tempPost.user.id})}"><strong class="text-gray-dark"

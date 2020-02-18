@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class PostDAOImpl implements PostDAO {
@@ -29,11 +28,9 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public List<Post> findAll() {
-        // create a query
         Query query =
                 entityManager.createQuery("from Post");
 
-        // execute query and get result list
         List<Post> posts = query.getResultList();
         orderByDate(posts);
 
@@ -94,7 +91,6 @@ public class PostDAOImpl implements PostDAO {
 
 
     private List<Post> orderByDate(List<Post> posts) {
-        System.out.println("order BY DATE");
         Comparator<Post> compareByDate = (Post p1, Post p2) -> p1.getDate().compareTo(p2.getDate());
         Collections.sort(posts, compareByDate);
 

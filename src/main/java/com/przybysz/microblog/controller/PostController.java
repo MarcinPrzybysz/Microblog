@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 
-//@RestController
 @Controller
-@RequestMapping("/posts")
+@RequestMapping(value="/posts", produces = "text/plain;charset=UTF-8")
 public class PostController {
 
     private PostService postService;
@@ -47,7 +46,6 @@ public class PostController {
     @PostMapping("/addPost")
     public String addPost(@ModelAttribute("employee") Post post) {
 
-
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username;
@@ -58,8 +56,6 @@ public class PostController {
             username = principal.toString();
         }
 
-        System.out.println("USERNAME: " + username);
-        // save the employee
         post.setId(0);
         postService.save(post, username);
 
