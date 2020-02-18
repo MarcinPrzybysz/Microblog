@@ -61,6 +61,7 @@ public class PostController {
             username = principal.toString();
         }
 
+        System.out.println("USERNAME: " + username);
         // save the employee
         post.setId(0);
         postService.save(post, username);
@@ -74,7 +75,7 @@ public class PostController {
     @PutMapping("")
     public Post updatePost(@RequestBody Post post) {
 
-        User user = new User("username", "pass", "firstName","lastName", "email");
+        User user = new User("username", "pass", "email");
         user.setId(5);
 
         postService.save(post, "username");

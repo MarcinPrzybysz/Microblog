@@ -67,13 +67,12 @@ public class PostDAOImpl implements PostDAO {
             post.setDate(now.toString());
         }
 
-        Optional<User> user = userRepository.findByUserName(username);
-
-        try {
-            post.setUser(user.get());
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot save post with null User: " + e);
+        User user = userRepository.findByUsername(username);
+        if(user==null){
+            throw new RuntimeException("Cannot save post with null User: " );
         }
+
+        post.setUser(user);
 
         Post dbPost = entityManager.merge(post);
 

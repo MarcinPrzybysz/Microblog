@@ -1,6 +1,7 @@
 package com.przybysz.microblog.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name="user")
@@ -8,16 +9,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id",unique = true, nullable = false)
     private int id;
 
-    @Column(name="user_name")
-    private String userName;
+    @Column(name="username", unique = true)
+    private String username;
 
     @Column(name="password")
     private String password;
 
-    @Column(name="email")
+    @Column(name="email", unique = true)
     private String email;
 
     @Column(name = "enabled")
@@ -26,16 +27,24 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
-    //todo czy cascade?
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="id")
-    private Authority authorities;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
 
     public User() {
+        enabled=true;
+        avatar="default.png";
     }
 
-    public User(String userName, String password, String firstName, String lastName, String email) {
-        this.userName = userName;
+    public User(String username, String password, String email) {
+        super();
+        this.username = username;
         this.password = password;
         this.email = email;
     }
@@ -49,12 +58,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -81,12 +90,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Authority getAuthorities() {
-        return authorities;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    public void setAuthorities(Authority authorities) {
-        this.authorities = authorities;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public String getAvatar() {
@@ -101,9 +110,13 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", enabled=" + enabled +
+                ", avatar='" + avatar + '\'' +
+                ", roles=" + roles +
                 '}';
     }
+
 }

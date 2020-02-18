@@ -60,12 +60,20 @@ public class UserController {
     }
 
     @PostMapping("addUser")
-    public String addUser(@ModelAttribute("user") User user){
+    public String addUser(@ModelAttribute("user") User user, Model model){
+
+        User newUser = userRepository.findByUsername(user.getUsername());
+
+        if(newUser.getUsername().equals(user.getUsername())){
+            model.addAttribute("user",new User());
+            model.addAttribute("inputError","Username already taken");
+            return "register-form";
+        }
+
+        //todo: metoda find by email i  validacja istniejącego maila
+
+
         user.setId(0);
-        System.out.println("Controller-add user");
-
-//        userService.addUser(user);
-
         userRepository.addUser(user);
 
         return "redirect:/posts";

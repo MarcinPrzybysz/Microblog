@@ -10,24 +10,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Title</title>
+    <title>Microblog</title>
 </head>
 <body>
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/posts">Microblog</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#">Info</a>
             </li>
-
         </ul>
 
         <div sec:authorize="!isAuthenticated()" >
@@ -38,7 +33,7 @@
         </div>
 
         <div sec:authorize="isAuthenticated()">
-            <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
+                        <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
 
             <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span>
             <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
@@ -61,30 +56,26 @@
         <th:block th:each="tempPost: ${posts}">
             <div class="media text-muted pt-3">
 
-                <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${tempPost.user.avatar})}" width="32" height="32" th:title="'@'+${tempPost.user.userName}"/>
+                <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${tempPost.user.avatar})}" width="32" height="32" th:title="'@'+${tempPost.user.username}"/>
 
-<!--                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"-->
-<!--                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">-->
-
-<!--                    <title> <div class="text-gray-dark" th:text="'@'+${tempPost.user.userName}"/></title>-->
-<!--                    <rect width="100%" height="100%" fill="#007bff"/>-->
-<!--                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>-->
-                </svg>
                 <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <div class="d-flex justify-content-between align-items-center w-100">
 
-                        <a th:href="@{/user/{id}(id = ${tempPost.user.id})}"><strong class="text-gray-dark" th:text="'@'+${tempPost.user.userName}"></strong></a>
+                        <a th:href="@{/user/{id}(id = ${tempPost.user.id})}"><strong class="text-gray-dark" th:text="'@'+${tempPost.user.username}"></strong></a>
 
-                        <span th:if="${tempPost.rating>0}" th:text="'+'+${tempPost.rating}"></span>
-                        <span th:if="${tempPost.rating<0}" th:text="${tempPost.rating}"></span>
-                        <span th:if="${tempPost.rating==0}" th:text="${tempPost.rating}"> <a href="#" th:text="${tempPost.rating}"></a></span>
+                        <div class="d-flex justify-content-between">
+                            <h6>
+                                <span class="p-1" th:if="${tempPost.rating>0}" th:text="'+'+${tempPost.rating}"></span>
+                                <span class="p-1" th:if="${tempPost.rating<0}" th:text="${tempPost.rating}"></span>
+                                <span class="p-1" th:if="${tempPost.rating==0}" th:text="${tempPost.rating}"> <a href="#" th:text="${tempPost.rating}"></a></span>
+                            </h6>
+                            <div sec:authorize="isAuthenticated()">
+                                <a class="p-1" th:href="@{/posts/plus/{id}(id = ${tempPost.id})}"><img  class="" aria-label="Plus" src="/icons/navigate_plus.png" width="13" height="13"/></a>
+                                <a class="p-1" th:href="@{/posts/minus/{id}(id = ${tempPost.id})}"><img  class="" aria-label="Minus"  src="/icons/navigate_minus.png" width="13" height="13"/></a>
+                            </div>
 
-
-                        <a th:href="@{/posts/plus/{id}(id = ${tempPost.id})}">+</a>
-                        <a th:href="@{/posts/minus/{id}(id = ${tempPost.id})}">-</a>
-
+                        </div>
                     </div>
-
 
                     <div>
                         <small><span th:text="${tempPost.date}"></span></small>

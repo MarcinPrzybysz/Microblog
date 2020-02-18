@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Title</title>
+    <title>Microblog- user info</title>
 </head>
 <body>
 
@@ -24,22 +24,25 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
             <li class="nav-item">
                 <a class="nav-link" href="#">Info</a>
             </li>
 
         </ul>
 
-        <div sec:authorize="!isAuthenticated()">
+        <div sec:authorize="!isAuthenticated()" >
             <a class="nav-link" href="/login">Login </a>
         </div>
-        <div sec:authorize="!isAuthenticated()">
+        <div sec:authorize="!isAuthenticated()" >
             <a class="nav-link" href="/user/register">Register </a>
         </div>
 
         <div sec:authorize="isAuthenticated()">
+            <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
+
             <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span>
+            <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
+
         </div>
         <div sec:authorize="isAuthenticated()">
             <a class="nav-link" href="/logout">LOG OUT<span class="sr-only">(current)</span></a>
@@ -56,11 +59,11 @@
         <br>
 
 
-        <img  class="bd-placeholder-img mr-2 rounded"  preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${user.avatar})}" width="100" height="100" th:title="'@'+${user.userName}"/>
+        <img  class="bd-placeholder-img mr-2 rounded"  preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${user.avatar})}" width="100" height="100" th:title="'@'+${user.username}"/>
 
         <br><br>
         <strong class="text-gray-dark"> USERNAME:</strong>
-        <td th:text="${user.userName}">username</td>
+        <td th:text="${user.username}">username</td>
 
         <br><br>
 
@@ -86,18 +89,12 @@
         <div th:unless="${#lists.isEmpty(posts)}">
             <th:block th:each="tempPost: ${posts}">
                 <div class="media text-muted pt-3">
-                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
-                         xmlns="http://www.w3.org/2000/svg"
-                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                         aria-label="Placeholder: 32x32">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#007bff"/>
-                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                    </svg>
+                    <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/avatars/{img}(img = ${tempPost.user.avatar})}" width="32" height="32" th:title="'@'+${tempPost.user.username}"/>
+
                     <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <a th:href="@{/user/{id}(id = ${tempPost.user.id})}"><strong class="text-gray-dark"
-                                                                                         th:text="'@'+${tempPost.user.userName}"></strong></a>
+                                                                                         th:text="'@'+${tempPost.user.username}"></strong></a>
                             <span th:if="${tempPost.rating>0}" th:text="'+'+${tempPost.rating}"> </span>
                             <span th:if="${tempPost.rating<0}" th:text="${tempPost.rating}"></span>
                             <span th:if="${tempPost.rating==0}" th:text="${tempPost.rating}"></span>

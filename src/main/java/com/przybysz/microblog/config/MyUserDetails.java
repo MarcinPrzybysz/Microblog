@@ -1,9 +1,12 @@
 package com.przybysz.microblog.config;
 
+import com.przybysz.microblog.entity.Role;
 import com.przybysz.microblog.entity.User;
+import com.przybysz.microblog.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,23 +15,26 @@ import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
-    private String userName;
+    private String username;
     private String password;
     private String avatar;
     private boolean active;
     private List<GrantedAuthority> authorities;
 
     public MyUserDetails(User user) {
-        this.userName = user.getUserName();
+        this.username = user.getUsername();
         this.password = user.getPassword();
         this.active = user.isEnabled();
         this.avatar = user.getAvatar();
-        this.authorities = Arrays.stream(user.getAuthorities().getRole().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+
+        Collection<Role> roles = user.getRoles();
+
+        this.authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+
     }
 
     @Override
+    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
@@ -40,8 +46,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-//
-        return userName;
+        return username;
     }
 
     public String getAvatar() {

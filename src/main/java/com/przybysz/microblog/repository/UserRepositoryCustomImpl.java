@@ -1,13 +1,15 @@
 package com.przybysz.microblog.repository;
 
-import com.przybysz.microblog.entity.Authority;
-import com.przybysz.microblog.entity.Post;
+import com.przybysz.microblog.dao.RoleDAO;
+import com.przybysz.microblog.entity.Role;
 import com.przybysz.microblog.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.Collection;
 
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
@@ -15,6 +17,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private RoleDAO roleDAO;
 
     @Autowired
     public UserRepositoryCustomImpl(EntityManager entityManager) {
@@ -24,28 +30,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @Override
     @Transactional
     public void addUser(User user) {
-//
-//        if (emailExist(accountDto.getEmail())) {
-//            throw new EmailExistsException(
-//                    "There is an account with that email adress:" + accountDto.getEmail());
-//        }
+        Collection<Role> roles = roleDAO.findRoleByName("ROLE_USER");
 
-        System.out.println("add user in repo");
-        user.setAuthorities(new Authority(user));
-
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setAvatar("default.png");
-
-        Authority authority = new Authority("ROLE_TEST");
-
-        user.setAuthorities(authority);
-
-        System.out.println(user.toString());
-        User dbUser = entityManager.merge(user);
-       
-
-
+        entityManager.merge(user);
 
     }
 
