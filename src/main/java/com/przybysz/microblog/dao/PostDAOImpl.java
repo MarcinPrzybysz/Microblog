@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PostDAOImpl implements PostDAO {
@@ -64,12 +65,12 @@ public class PostDAOImpl implements PostDAO {
             post.setDate(now.toString());
         }
 
-        User user = userRepository.findByUsername(username);
-        if(user==null){
+        Optional<User> user = userRepository.findByUsername(username);
+        if(!user.isPresent()){
             throw new RuntimeException("Cannot save post with null User: " );
         }
 
-        post.setUser(user);
+        post.setUser(user.get());
 
         Post dbPost = entityManager.merge(post);
 

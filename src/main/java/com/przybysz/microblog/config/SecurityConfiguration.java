@@ -32,18 +32,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-//                .antMatchers("/test/posts").hasRole("ADMIN")
-                .antMatchers("/user/register").permitAll()
-                .antMatchers("/user/addUser").permitAll()
-                .antMatchers("/user/1").hasAnyRole("ADMIN", "MODERATOR")
-                .antMatchers("/user/register").not().authenticated()
-                .antMatchers("/user/**").authenticated()
-                .antMatchers("/").permitAll()
-                .and().formLogin()
-                .and()
+                http
+                .authorizeRequests()
+                    .antMatchers("/user/register").permitAll()
+                    .antMatchers("/user/addUser").permitAll()
+                    .antMatchers("/user/1").hasAnyRole("ADMIN")
+                    .antMatchers("/user/register").not().authenticated()
+                    .antMatchers("/user/**").authenticated()
+                    .antMatchers("/").permitAll()
+                    .and().
+                formLogin()
+                    .and()
                 .logout()
-                .logoutSuccessUrl("/posts");
+                    .logoutSuccessUrl("/posts")
+                    .and()
+                .exceptionHandling()
+                    .accessDeniedPage("/access-denied");
+
     }
 
     @Bean

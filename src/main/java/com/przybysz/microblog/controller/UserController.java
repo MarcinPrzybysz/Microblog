@@ -45,24 +45,13 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping("/register")
-    public String registerUser(Model model){
-        User newUser = new User();
-        model.addAttribute("user", newUser);
-        return "register-form";
-    }
-
-    @GetMapping("/login")
-    public String loginUser(){
-        return "signin-form";
-    }
-
     @PostMapping("addUser")
     public String addUser(@ModelAttribute("user") User user, Model model){
 
-        User newUser = userRepository.findByUsername(user.getUsername());
+        Optional<User> newUser = userRepository.findByUsername(user.getUsername());
 
-        if(newUser!=null){
+
+        if(newUser.isPresent()){
             model.addAttribute("user",new User());
             model.addAttribute("inputError","Username already taken");
             return "register-form";

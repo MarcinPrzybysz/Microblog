@@ -41,25 +41,4 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         entityManager.merge(user);
     }
 
-//    @Override
-//    public User findByUsername(String username) {
-//
-//        System.out.println("find user by username");
-//        List<User> users = null;
-//        User user= null;
-//        Query query = entityManager.createQuery("FROM User WHERE username=:username");
-//
-//        query.setParameter("username", username);
-//
-//
-//        users = query.getResultList();
-//
-//        if(!users.isEmpty()){
-//           user = users.get(0);
-//            System.out.println("znaleziony: " +user.toString());
-//           return user;
-//        }
-//
-//        return null;
-//    }
 }

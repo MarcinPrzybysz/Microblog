@@ -18,33 +18,31 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/posts">Microblog</a>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Info</a>
-            </li>
-        </ul>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#">Info</a>
+        </li>
+    </ul>
 
-        <div sec:authorize="!isAuthenticated()" >
-            <a class="nav-link" href="/login">Login </a>
-        </div>
-        <div sec:authorize="!isAuthenticated()" >
-            <a class="nav-link" href="/user/register">Register </a>
-        </div>
+    <div sec:authorize="!isAuthenticated()" >
+        <a class="nav-link" href="/login">Login </a>
+    </div>
+    <div sec:authorize="!isAuthenticated()" >
+        <a class="nav-link" href="/user/register">Register </a>
+    </div>
 
-        <div sec:authorize="isAuthenticated()">
-            <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
+    <div sec:authorize="isAuthenticated()">
+        <img  class="bd-placeholder-img mr-2 rounded" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="'/avatars/'+${#authentication.getPrincipal().getAvatar()}" width="32" height="32" th:title="'@'+${#authentication.getPrincipal().getUsername()}"/>
 
-            <a th:href="@{/user/{id}(id =${#authentication.getPrincipal().getUsername()}  }"> <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span> </a>
+        <a th:href="@{/user/}+${#authentication.getPrincipal().getId()}  "> <span th:text="'@'+${#authentication.getPrincipal().getUsername()}"></span></a>
 
-            <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
-
-        </div>
-        <div sec:authorize="isAuthenticated()">
-            <a class="nav-link" href="/logout">LOG OUT<span class="sr-only">(current)</span></a>
-        </div>
+        <span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>
 
     </div>
+    <div sec:authorize="isAuthenticated()">
+        <a class="nav-link" href="/logout">LOG OUT<span class="sr-only">(current)</span></a>
+    </div>
+
 </nav>
 
 <main role="main" class="container">

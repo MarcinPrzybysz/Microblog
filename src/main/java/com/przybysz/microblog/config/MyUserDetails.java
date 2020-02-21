@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
+    private int id;
     private String username;
     private String password;
     private String avatar;
@@ -22,6 +23,7 @@ public class MyUserDetails implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public MyUserDetails(User user) {
+        this.id=user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.active = user.isEnabled();
@@ -37,6 +39,14 @@ public class MyUserDetails implements UserDetails {
     @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

@@ -27,8 +27,7 @@ public class MyUserServiceImpl implements MyUserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("loadByUsername in MyUserService");
-        Optional<User> user =  Optional.of(userRepository.findByUsername(username));
+        Optional<User> user =  userRepository.findByUsername(username);
 
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + username));
 
